@@ -34,6 +34,27 @@ ie,
 
 ```flake8 /path/to/foo.py```
 
+
+Tests
+=====
+Some basic testing can be dome with:
+    ```flake8 test/*.py```
+At the moment, nothing is asserted or varified, but it should
+at least be some sample good/bad code.
+
+But basically, *_pass.py should not show any errors, while
+_fail.py should show some errors.
+
+Checks
+======
+R201  no 'except:' at least use 'except Exception:'
+R202  assertRaises Exception too broad
+R306  imports not in alphabetical order
+R701  Empty localization string
+R702  Formatting operation should be outside of localization method call
+R702  Use bare string concatenation instead of +
+
+
 License
 ======
 
