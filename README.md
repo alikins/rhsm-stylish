@@ -8,11 +8,13 @@ Dependencies
 
 flake8 (recent, master from git/hg basically)
     https://bitbucket.org/tarek/flake8/wiki/Home
+
 pep8 (recent, master from git basically)
     https://github.com/jcrocholl/pep8
 
 Suggestions
 ==========
+
 pep8-naming (https://github.com/flintwork/pep8-naming)
 
 
@@ -38,7 +40,9 @@ ie,
 Tests
 =====
 Some basic testing can be dome with:
+
     ```flake8 test/*.py```
+
 At the moment, nothing is asserted or varified, but it should
 at least be some sample good/bad code.
 
