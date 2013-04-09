@@ -121,8 +121,24 @@ def nova_todo_format(physical_line, tokens):
         return pos, "N101: Use TODO(NAME)"
 
 
+def rhsm_no_debugger(physical_line):
+    """check for debugging remnants.
+
+    For example, pdb, pr pydevd, etc"""
+
+    debugger_keywords = """pdb.set_trace|pydevd.settrace|import ipdb|import pdb|import pydevd"""
+    debugger_regex = re.compile(debugger_keywords)
+    match = debugger_regex.search(physical_line)
+    if match:
+        pos = match.start()
+        return pos, "R102: remnants of debugger usage found"
+
+rhsm_no_debugger.name = name
+rhsm_no_debugger.version = version
+
+
 def rhsm_except_format(logical_line):
-    r"""Check for 'except:'.
+    """Check for 'except:'.
 
     rhsm stylish guide recommends not using except:
     Do not write "except:", use "except Exception:" at the very least

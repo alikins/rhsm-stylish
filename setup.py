@@ -10,5 +10,6 @@ setup(name="rhsm-stylish",
                      'R81 = rhsm_stylish:rhsm_except_format',
                      'R82 = rhsm_stylish:rhsm_except_format_assert',
                      'R83 = rhsm_stylish:rhsm_import_alphabetical',
+                     'R84 = rhsm_stylish:rhsm_no_debugger',
                      'R99 = rhsm_stylish:RhsmStylish']}
       )
