@@ -57,6 +57,7 @@ Checks
 * R701  Empty localization string
 * R702  Formatting operation should be outside of localization method call
 * R702  Use bare string concatenation instead of +
+* R934  Unfamiliar with Usenet/Vi
 
 
 License
