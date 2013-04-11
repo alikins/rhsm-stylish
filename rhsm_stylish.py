@@ -33,7 +33,9 @@ import sys
 import tokenize
 import traceback
 
+import flake8
 import pep8
+
 
 name = "rhsm-styish"
 version = "1.0"
@@ -135,6 +137,25 @@ def rhsm_no_debugger(physical_line):
 
 rhsm_no_debugger.name = name
 rhsm_no_debugger.version = version
+
+
+def rhsm_editor_fluff(physical_line):
+    """Check for accidental typos from editor mistakes
+
+    Most of these should cause other mistakes, but
+    just in case
+    """
+
+    # for mmccune
+    editor_matches = """:qa|:q|:qa|:w"""
+    editor_regex = re.compile(editor_matches)
+    match = editor_regex.search(physical_line)
+    if match:
+        pos = match.start()
+        return pos, 'R103: remnants of editor misuse found'
+
+rhsm_editor_fluff.name = name
+rhsm_editor_fluff.version = version
 
 
 def rhsm_except_format(logical_line):
@@ -352,7 +373,6 @@ def nova_docstring_start_space(physical_line, previous_logical):
     if physical_line.find("N401: def foo()") != -1:
         return
 
-#    print "FOOOOOOOOOOOOOOOOOOOO"
     # it's important that we determine this is actually a docstring,
     # and not a doc block used somewhere after the first line of a
     # function def
@@ -640,10 +660,49 @@ imports_on_separate_lines_N301_compliant = r"""
     Okay: import foo.bar.yourclass
     """
 
+class RhsmMessage(object):
+    def __init__(self, lineno, position, msg):
+        self.lineno = lineno
+        self.position = position
+        self.msg = msg
 
-class RhsmStylish(object):
+
+class RhsmStylish(flake8.engine.StyleGuide):
     name = "RhsmStylish"
-    version = "1.0"
+    version = "2.1"
+    checker_class = pep8.Checker
 
-    def __init__(self):
-        pass
+    def get_checks(self, argument_name):
+        if argument_name == 'physical_line':
+            return self._get_physical()
+        if argument_name == 'logical_line':
+            return self._get_logical()
+
+    def _get_physical(self):
+        return []
+
+    def _get_logical(self):
+        return [rhsm_localization_strings]
+
+
+class RhsmStylishiSomething(object):
+    name = "RhsmStylish"
+    version = "2.0"
+
+    def __init__(self, tree, filename):
+        self.messages = []
+        self.tree = tree
+        self.filename = filename
+        self.style_guide = flake8.get_style_guide(checker_class=RhsmStylishChecker)
+        self.checkers = _get_checkers()
+
+    def _get_checkers(self):
+        return [rhsm_except_format,
+                rhsm_except_format_assert,
+                rhsm_import_alphabetical]
+
+    def run(self):
+        msg = RhsmMessage(0, 0, 'this is a test message')
+        self.messages = [msg]
+        for message in self.messages:
+            yield message.lineno, 0, ('a'), message.__class__
