@@ -142,17 +142,17 @@ rhsm_no_debugger.version = version
 def rhsm_editor_fluff(physical_line):
     """Check for accidental typos from editor mistakes
 
-    Most of these should cause other mistakes, but
+    Most of these should cause other errors, but
     just in case
     """
 
     # for mmccune
-    editor_matches = """:qa|:q|:qa|:w"""
+    editor_matches = """:qa|:wq|:q|:qa|:w"""
     editor_regex = re.compile(editor_matches)
     match = editor_regex.search(physical_line)
     if match:
         pos = match.start()
-        return pos, 'R103: remnants of editor misuse found'
+        return pos, 'R934: remnants of editor misuse found'
 
 rhsm_editor_fluff.name = name
 rhsm_editor_fluff.version = version
